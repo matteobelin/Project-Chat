@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
           }
   
           // La clé privée a été lue avec succès
-          const token = jwt.sign(users[0].pseudo, privateKey, { algorithm: 'RS256' });
+          const token = jwt.sign(users[0].pseudo, privateKey, { algorithm: 'RS256' })          
           const cookieValue = `jwtToken=${token}; HttpOnly; Secure; Max-Age=86400; Path=/`;
           res.setHeader('Set-Cookie', cookieValue);
           res.redirect('/');

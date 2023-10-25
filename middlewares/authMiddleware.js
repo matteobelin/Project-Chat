@@ -2,7 +2,10 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 
 const publicKeyPath = './config/publicKey.pem'; // Assurez-vous que le chemin est correct
+const mongoose = require('mongoose');
+require('../models/user.models')
 
+var User=mongoose.model('user')
 
 
 
@@ -39,7 +42,34 @@ function verifyToken(req, res, next) {
   });
 }
 
+function getIdByPseudo(pseudoToFind,connectedUsers) {
+  let socketId = null;
+  connectedUsers.forEach((value, key) => {
+    if (value === pseudoToFind) {
+      socketId = key;
+      return; 
+    }
+  });
+  return socketId;
+}
+
+function getUser(receiver) {
+  return User.find().then((users) => {
+    let perso = null;
+
+    users.forEach((user) => {
+      if (user.pseudo === receiver) {
+        perso = user.pseudo;
+      }
+    });
+
+    return perso;
+  });
+}
+ 
+
+
 module.exports = {
-  verifyToken,
+  verifyToken,getIdByPseudo,getUser
 };
 
