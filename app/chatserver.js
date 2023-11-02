@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
-const {getIdByPseudo}=require('../middlewares/authMiddleware') 
+const {getIdByPseudo,getReceiverById}=require('../middlewares/authMiddleware') 
 const {getUser}=require('../middlewares/authMiddleware') 
+const {readToken}=require('../middlewares/authMiddleware')
 require('../models/chat.models');
 
 
@@ -14,10 +15,20 @@ module.exports=function(io){
         var lastReceiver='';
         
         
-        socket.on('pseudo',(pseudo,receiver)=>{
-          socket.pseudo=pseudo
+        socket.on('pseudo',(receiver)=>{
+  
+          socket.pseudo=readToken(socket.request.headers.cookie)
+          socket.receiver=receiver
+          const userData = {
+            pseudo: socket.pseudo, 
+            receiver: socket.receiver,
+          };
           if(!connectedUsers.has(socket.id)){
-            connectedUsers.set(socket.id,socket.pseudo)
+            connectedUsers.set(socket.id,userData)
+          }
+          else{
+            connectedUsers.delete(socket.id);
+            connectedUsers.set(socket.id,userData)
           }
           Chat.find().then((messages) => {
             messages.forEach((message) => {
@@ -38,26 +49,26 @@ module.exports=function(io){
             getUser(receiver).then((pseudo)=>{
               if(pseudo){
                   {
-                    if(lastPseudo!==msg.pseudo && lastReceiver!==receiver){
-                      var message=msg.pseudo+'\n'+msg.texte
-                      if(getIdByPseudo(receiver,connectedUsers)){
+                    if(lastPseudo!==socket.pseudo && lastReceiver!==receiver){
+                      var message=socket.pseudo+'\n'+msg.texte
+                      if(getIdByPseudo(receiver,connectedUsers) && getReceiverById(getIdByPseudo(receiver,connectedUsers),connectedUsers)===receiver){
                         socketUser=getIdByPseudo(receiver,connectedUsers);
                         socket.to(socketUser).emit('messageAll',message );
                       }
-                      socket.emit('messageMe', msg.pseudo+'\n'+msg.texte);
+                      socket.emit('messageMe', socket.pseudo+'\n'+msg.texte);
                       chat.content=message;
-                      chat.sender=msg.pseudo;
+                      chat.sender=socket.pseudo;
                       chat.receiver=receiver;
-                      lastPseudo=msg.pseudo;
+                      lastPseudo=socket.pseudo;
                       lastReceiver=receiver
                     }else{
-                      if(getIdByPseudo(receiver,connectedUsers)){
+                      if(getIdByPseudo(receiver,connectedUsers)&& getReceiverById(getIdByPseudo(receiver,connectedUsers),connectedUsers)===receiver){
                         socketUser=getIdByPseudo(receiver,connectedUsers);
                         socket.to(socketUser).emit('messageAll', msg.texte);
                       }
                       socket.emit('messageMe', msg.texte);
                       chat.content=msg.texte;
-                      chat.sender=msg.pseudo;
+                      chat.sender=socket.pseudo;
                       chat.receiver=receiver;
                   
                     }
@@ -70,11 +81,12 @@ module.exports=function(io){
             
         });
     
-        socket.on('writting',(write,receiver)=>{
+        socket.on('writting',(receiver)=>{
             if(getIdByPseudo(receiver,connectedUsers)){
               socketUser=getIdByPseudo(receiver,connectedUsers);
-              socket.to(socketUser).emit('writting',write+' est en train d\'écrire');
-              
+              if(getReceiverById(socketUser,connectedUsers) ===socket.pseudo){
+                socket.to(socketUser).emit('writting',socket.pseudo+' est en train d\'écrire');
+              }  
             }
             
             

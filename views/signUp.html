@@ -3,22 +3,32 @@
   <head>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>signUp</title>
+    <link rel="stylesheet" href="../public/styles.css">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
   </head>
   <body>
-      <form  action="" method="post">
-        <label for="pseudo">pseudo</label>
-        <input type="text" name="pseudo" placeholder="pseudo">
-
-        <label for="email">email</label>
-        <input type="email" name="email" placeholder="email">
-
-        <label for="confirm_email">confirm email</label>
-        <input type="email" name="confirm_email" placeholder="confirmer email">
-
-        <label for="password">password</label>
-        <input type="password" name="password" placeholder="password">
-
-        <button type="submit" id="submit">s'enregistrer</button>
+      <form class="connect" action="" method="post">
+        <h1>Signup</h1>
+        <div class="svg"></div>
+        <div class="flexbox">
+          <div class="flexbox">
+            <label class="label" for="pseudo">Pseudo</label>
+            <input class="inputForm" type="text" name="pseudo" placeholder="Enter pseudo">
+          </div>
+          <div class="flexbox">
+            <label class="label" for="email">Email</label>
+            <input class="inputForm" type="email" name="email" placeholder="Enter email">
+          </div>
+          <div class="flexbox">
+            <label class="label" for="confirm_email">Confirm email</label>
+            <input class="inputForm" type="email" name="confirm_email" placeholder="Confirm email">
+          </div>
+          <div class="flexbox">
+            <label class="label" for="password">Password</label>
+            <input class="inputForm" type="password" name="password" placeholder="Enter password" autocomplete="current-password">
+          </div>
+          <button class="boutton" type="submit" id="submit">Sign up</button>
+        </div>
       </form>
   </body>
 </html>

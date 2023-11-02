@@ -1,5 +1,4 @@
 const socket = io();
-let pseudo;
 let receiver;
 
 
@@ -12,7 +11,8 @@ function createFriendLink(element) {
     event.preventDefault();
     clearMessages();
     receiver = event.target.textContent;
-    socket.emit('pseudo', pseudo, receiver);
+    socket.emit('pseudo',receiver);
+    
   });
 
   return link;
@@ -27,18 +27,13 @@ function clearMessages() {
   meElements.forEach(element => element.remove());
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  fetch('/getPseudo', {
-    method: 'POST',
-  })
-    .then(response => response.json())
-    .then(data => {
-      pseudo = data.pseudo;
+
       fetch('/getFriend', {
         method: 'POST',
       })
         .then(response => response.json())
         .then(data => {
+          
           const tab = data.friendData;
           const friendList = document.getElementById('friend');
 
@@ -54,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           form.addEventListener('input', () => {
             if (msgInput.value.trim() !== '') {
-              socket.emit('writting', pseudo, receiver);
+              socket.emit('writting', receiver);
             } else {
               socket.emit('notWritting');
             }
@@ -64,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             if (msgInput.value) {
               const message = {
-                pseudo: pseudo,
                 texte: msgInput.value,
               };
               socket.emit('chat message', message, receiver);
@@ -104,8 +98,4 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
           console.error('Une erreur s\'est produite :', error);
         });
-    })
-    .catch(error => {
-      console.error('Erreur lors de la récupération du pseudo :', error);
-    });
-});
+  

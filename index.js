@@ -31,16 +31,14 @@ app.use('/public', express.static(__dirname + '/public'));
 
 
 
+
 app.get('/', verifyToken, (req, res) => {
   res.sendFile(join(__dirname, 'views/index.html'));
 });
 
 app.use('/login', loginRouter)
 app.use('/signup',signUpRouter)
-app.post('/getPseudo', verifyToken, (req, res) => {
-  const pseudo = req.user;
-  res.json({ pseudo });
-});
+
 
 app.post('/getFriend',verifyToken, (req, res) => {
   const pseudo=req.user;
@@ -75,25 +73,45 @@ app.post('/addFriend', verifyToken, async (req, res) => {
   if (pseudo === friend) {
     res.send("Impossible de s'ajouter soi-même en ami.");
   } else {
-    User.find().then((users) => {
-      users.forEach((user) => {
-        if (user.pseudo === friend) {
-          const newFriend = new Friend();
-          newFriend.pseudo1 = pseudo;
-          newFriend.pseudo2 = friend;
-          newFriend.save();
-          utilisateurTrouve = true;
+    Friend.find({ $or: [{ pseudo1: pseudo, pseudo2: friend }, { pseudo1: friend, pseudo2: pseudo }] })
+      .then((existingFriends) => {
+        if (existingFriends.length === 0) {
+          User.findOne({ pseudo: friend })
+            .then((user) => {
+              if (user) {
+                const newFriend = new Friend();
+                newFriend.pseudo1 = pseudo;
+                newFriend.pseudo2 = friend;
+                newFriend.save()
+                  .then(() => {
+                    res.redirect('/');
+                  })
+                  .catch((error) => {
+                    res.status(500).send("Erreur lors de l'ajout de l'ami : " + error);
+                  });
+              } else {
+                res.send('Utilisateur non trouvé');
+              }
+            })
+            .catch((error) => {
+              res.status(500).send("Erreur lors de la recherche de l'utilisateur : " + error);
+            });
+        } else {
+  
+          res.send("L'amitié existe déjà.");
         }
+      })
+      .catch((error) => {
+        res.status(500).send("Erreur lors de la recherche d'amitié : " + error);
       });
-
-      if (utilisateurTrouve) {
-        res.redirect('/');
-      } else {
-        res.send('Utilisateur non trouvé');
-      }
-    });
   }
-});
+})
+
+app.get('/logout',verifyToken,(req,res)=>{
+  const cookieValue = `jwtToken=; HttpOnly; Secure; Max-Age=-1; Path=/`;
+  res.setHeader('Set-Cookie', cookieValue);
+  res.redirect('/');
+})
 
 require('./app/chatserver')(io);
   

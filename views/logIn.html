@@ -2,19 +2,27 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="../public/styles.css">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <title>logIn</title>
   </head>
   <body>
-      <form  action="" method="post">
-
-        <label for="email">Email</label>
-        <input type="email" name="email" placeholder="Email">
-
-        <label for="password">Password</label>
-        <input type="password" name="password"  placeholder="Password">
-
-        <button type="submit">se connecter</button>
-        <a href="/signup">signUp</a>
+      <form class="connect" action="" method="post">
+        <h1>Login</h1>
+        <div class="svg"></div>
+        <div class="flexbox">
+          <div class="flexbox">
+            <label class="label" for="email">Email</label>
+            <input class="inputForm" type="email" name="email" placeholder="Enter email">
+          </div>
+          <div class="flexbox">
+            <label class="label" for="password">Password</label>
+            <input class="inputForm" type="password" name="password"  placeholder="Enter password" autocomplete="current-password">
+          </div>
+          <button class="boutton" type="submit">Log in</button>
+          <p>Don't have account ? <a href="/signup">Create account</a></p>
+          
+        </div>
       </form>
   </body>
 </html>

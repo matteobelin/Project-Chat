@@ -3,22 +3,35 @@
   <head>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Chat</title>
+    <link rel="stylesheet" href="../public/styles.css">
+    <link rel="stylesheet" href="../public/reset.css">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
   </head>
   <body>
-    <div>
-      <form action="/addFriend" method="post">
-        <input type="text" name="rechercher" placeholder="rechercher">
-      </form>
+    <div class="flexbox">
+      <div class="left">
+        <div>
+          <a href="/logout">log out</a>
+        </div>
+        <div>
+          <form action="/addFriend" method="post">
+            <input class="inputForm" type="text" name="rechercher" placeholder="Search">
+          </form>
+        </div>
+        <div>
+          <ul id="friend"></ul>
+        </div>
+      </div>
+      <div class="chat">
+        <ul id="messages"></ul>
+        <div id="isWritting"></div>
+        <form id="form" action="">
+          <input class="toSend" id="msgInput" autocomplete="off" /><button>Send</button>
+        </form> 
+      </div>
+    
     </div>
-    <div>
-      <ul id="friend"></ul>
-    </div>
-    <ul id="messages"></ul>
-    <div id="isWritting"></div>
-      <form id="form" action="">
-        <input id="msgInput" autocomplete="off" /><button>Send</button>
-      </form> 
-    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-    <script src="../public/chat.js"></script>
+      <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+      <script src="../public/chat.js"></script>
   </body>
 </html>

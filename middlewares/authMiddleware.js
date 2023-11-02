@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 
+
 const publicKeyPath = './config/publicKey.pem'; // Assurez-vous que le chemin est correct
 const mongoose = require('mongoose');
 require('../models/user.models')
@@ -42,15 +43,55 @@ function verifyToken(req, res, next) {
   });
 }
 
+
+function readToken(cookies) {
+  if (!cookies) {
+    return res.redirect('/login');;
+  }
+
+  const tokenCookie = cookies.split(';').find(cookie => cookie.trim().startsWith('jwtToken='));
+
+  if (!tokenCookie) {
+    return res.redirect('/login');
+  }
+
+  const token = tokenCookie.split('=')[1];
+
+  try {
+    const publicKey = fs.readFileSync(publicKeyPath, 'utf-8');
+    const decoded = jwt.verify(token, publicKey);
+    return decoded;
+  } catch (error) {
+    console.error('Erreur :', error);
+    throw new Error('Erreur du serveur interne');
+  }
+}
+
+
+
+
+
 function getIdByPseudo(pseudoToFind,connectedUsers) {
   let socketId = null;
   connectedUsers.forEach((value, key) => {
-    if (value === pseudoToFind) {
+    if (value.pseudo === pseudoToFind) {
       socketId = key;
       return; 
     }
   });
   return socketId;
+}
+
+
+function getReceiverById(socketId,connectedUsers) {
+  let receiver = null;
+  connectedUsers.forEach((value, key) => {
+    if (key === socketId) {
+      receiver = value.receiver;
+      return; 
+    }
+  });
+  return receiver;
 }
 
 function getUser(receiver) {
@@ -70,6 +111,6 @@ function getUser(receiver) {
 
 
 module.exports = {
-  verifyToken,getIdByPseudo,getUser
+  verifyToken,getIdByPseudo,getUser,readToken,getReceiverById
 };
 
