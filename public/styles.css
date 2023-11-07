@@ -89,7 +89,6 @@ p{
 }
 
 .left{
-    position:fixed;
     background: white; 
     backdrop-filter: blur(10px); 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
@@ -135,18 +134,128 @@ p{
   }
 
   .chat{
-    margin-left: 270px;
+    margin-top: 1vh;
+    margin-left: 20px;
     background: white; 
     backdrop-filter: blur(10px); 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
     border-radius: 15px;
-    padding-right: 25px;
     padding-bottom: 10px;
-    padding-top: 10px;
+    padding-top: 40px;
   }
+
+ 
 
   .chat .toSend{
-    margin-left: 25px;
-    padding-right:700px ;
+    margin-left: 30px;
+    padding-right:95vh ;
+    padding-left: 10px;
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    font-size: 15px;
+    border: solid;
+    border-color:rgba(200, 200, 200, 0.99) ;
+    border-radius: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-family: 'Poppins';
+    background: rgba(200, 200, 200, 0.5);
+    backdrop-filter: blur(10px); 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
+  }
+  .chat #isWritting{
+    margin-top: 5vh;
+    margin-left: 4vh;
   }
 
+  /* Style du conteneur */
+   .ul-container {
+    width: 270px;
+    height: 92vh;
+    overflow: auto;
+}
+
+
+.chat .ul-container {
+    margin-left: 5vh;
+    padding-right: 100vh;
+    height: 81vh;
+    overflow: auto;
+}
+
+#messages{
+    font-family: 'Poppins';
+}
+.all{
+    
+    margin-top: 10px;
+}
+
+.me{
+    margin-top: 10px;
+}
+
+.me+.me{
+    margin-top: 0px;
+}
+
+
+
+.all+.all{
+    margin-top: 0px;
+}
+
+.before-newline::after {
+    content: '\A'; 
+    white-space: pre; 
+}
+
+.before-newline {
+    color: red;
+    line-height: 2; 
+}
+
+.all .before-newline {
+    color: blue;
+}
+
+.after-newline {
+    color: black;
+    padding-left: 5px;
+    border-left:solid red ;
+}
+
+.all .after-newline {
+    border-left:solid blue ;
+}
+
+
+
+
+
+
+::-webkit-scrollbar {
+    width: 12px; 
+    background-color: white; 
+  }
+  
+ 
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+  }
+  
+
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 6px; 
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+  
+  
+  
+  
+  

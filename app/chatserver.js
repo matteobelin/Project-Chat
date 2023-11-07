@@ -33,7 +33,12 @@ module.exports=function(io){
           Chat.find().then((messages) => {
             messages.forEach((message) => {
               if (message.sender == socket.pseudo && message.receiver == receiver){
+                const textParts = message.content.split('\n');
+                if (textParts.length === 1) {
                 socket.emit('messageMe', message.content);
+              }else{
+                socket.emit('messageMe','Moi'+'\n'+textParts[1])
+              }
               }
               else if(message.sender == receiver && message.receiver == socket.pseudo){
                 socket.emit('messageAll', message.content);
@@ -45,24 +50,23 @@ module.exports=function(io){
     
         socket.on('chat message', (msg,receiver) => {
             var chat= new Chat;
-            
             getUser(receiver).then((pseudo)=>{
               if(pseudo){
                   {
                     if(lastPseudo!==socket.pseudo && lastReceiver!==receiver){
                       var message=socket.pseudo+'\n'+msg.texte
-                      if(getIdByPseudo(receiver,connectedUsers) && getReceiverById(getIdByPseudo(receiver,connectedUsers),connectedUsers)===receiver){
+                      if(getIdByPseudo(receiver,connectedUsers) && getReceiverById(getIdByPseudo(receiver,connectedUsers),connectedUsers)===socket.pseudo){
                         socketUser=getIdByPseudo(receiver,connectedUsers);
                         socket.to(socketUser).emit('messageAll',message );
                       }
-                      socket.emit('messageMe', socket.pseudo+'\n'+msg.texte);
+                      socket.emit('messageMe', 'Moi'+'\n'+msg.texte);
                       chat.content=message;
                       chat.sender=socket.pseudo;
                       chat.receiver=receiver;
                       lastPseudo=socket.pseudo;
                       lastReceiver=receiver
                     }else{
-                      if(getIdByPseudo(receiver,connectedUsers)&& getReceiverById(getIdByPseudo(receiver,connectedUsers),connectedUsers)===receiver){
+                      if(getIdByPseudo(receiver,connectedUsers)&& (getReceiverById(getIdByPseudo(receiver,connectedUsers),connectedUsers)===socket.pseudo)){
                         socketUser=getIdByPseudo(receiver,connectedUsers);
                         socket.to(socketUser).emit('messageAll', msg.texte);
                       }

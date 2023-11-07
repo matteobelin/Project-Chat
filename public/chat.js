@@ -12,7 +12,6 @@ function createFriendLink(element) {
     clearMessages();
     receiver = event.target.textContent;
     socket.emit('pseudo',receiver);
-    
   });
 
   return link;
@@ -25,6 +24,8 @@ function clearMessages() {
 
   const meElements = document.querySelectorAll('li.me');
   meElements.forEach(element => element.remove());
+
+  document.getElementById('isWritting').textContent = '';
 }
 
 
@@ -42,6 +43,8 @@ function clearMessages() {
             item.appendChild(createFriendLink(element));
             friendList.appendChild(item);
           });
+
+            
 
           const form = document.getElementById('form');
           const msgInput = document.getElementById('msgInput');
@@ -78,21 +81,62 @@ function clearMessages() {
           socket.on('messageAll', (msg) => {
             const item = document.createElement('li');
             item.classList.add('all');
-            item.style.whiteSpace = 'pre-line';
-            item.style.color = 'red';
-            item.textContent = msg;
             messages.appendChild(item);
+            
+            const textParts = msg.split('\n');
+            if (textParts.length === 1) {
+              
+              const entireText = document.createElement('span');
+              entireText.classList.add('after-newline');
+              entireText.textContent = msg;
+              item.appendChild(entireText);
+          } else{
+            const firstPart = document.createElement('span');
+            firstPart.classList.add('before-newline');
+            firstPart.textContent = textParts[0];
+
+            const secondPart = document.createElement('span');
+            secondPart.classList.add('after-newline');
+            secondPart.textContent = textParts.slice(1).join('\n');
+
+            item.appendChild(firstPart);
+            item.appendChild(secondPart);
+          }
             window.scrollTo(0, document.body.scrollHeight);
+            const container = document.querySelector(".chat .ul-container");
+            container.scrollTop = container.scrollHeight;
+        
           });
 
           socket.on('messageMe', (msg) => {
+            
             const item = document.createElement('li');
             item.classList.add('me');
-            item.style.whiteSpace = 'pre-line';
-            item.style.color = 'blue';
-            item.textContent = msg;
             messages.appendChild(item);
+
+            const textParts = msg.split('\n');
+            if (textParts.length === 1) {
+              
+              const entireText = document.createElement('span');
+              entireText.classList.add('after-newline');
+              entireText.textContent = msg;
+              item.appendChild(entireText);
+          } else{
+            const firstPart = document.createElement('span');
+            firstPart.classList.add('before-newline');
+            firstPart.textContent = textParts[0];
+
+            const secondPart = document.createElement('span');
+            secondPart.classList.add('after-newline');
+            secondPart.textContent = textParts.slice(1).join('\n');
+
+            item.appendChild(firstPart);
+            item.appendChild(secondPart);
+          }
             window.scrollTo(0, document.body.scrollHeight);
+            
+            const container = document.querySelector(".chat .ul-container");
+            container.scrollTop = container.scrollHeight;
           });
         })
         .catch(error => {
