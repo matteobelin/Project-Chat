@@ -89,7 +89,7 @@ module.exports=function(io){
             if(getIdByPseudo(receiver,connectedUsers)){
               socketUser=getIdByPseudo(receiver,connectedUsers);
               if(getReceiverById(socketUser,connectedUsers) ===socket.pseudo){
-                socket.to(socketUser).emit('writting',socket.pseudo+' est en train d\'écrire');
+                socket.to(socketUser).emit('writting',socket.pseudo+' est en train d\'écrire . . .');
               }  
             }
             
