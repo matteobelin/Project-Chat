@@ -64,14 +64,58 @@ app.post('/getFriend',verifyToken, (req, res) => {
 });
 
 
+app.get('/addFriend', verifyToken,(req, res)=>{
+  res.redirect('/')
+} )
 
 app.post('/addFriend', verifyToken, async (req, res) => {
   const pseudo = req.user;
   const friend = req.body.rechercher;
-  let utilisateurTrouve = false;
 
   if (pseudo === friend) {
-    res.send("Impossible de s'ajouter soi-même en ami.");
+
+    res.send(`<!DOCTYPE html>
+          <html>
+            <head>
+              <meta name="viewport" content="width=device-width,initial-scale=1.0">
+              <title>Chat</title>
+              <link rel="stylesheet" href="../public/styles.css">
+              <link rel="stylesheet" href="../public/reset.css">
+              <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+            </head>
+            <body>
+              <div class="flexbox">
+                <div class="left">
+                  <div class="logout">
+                    <a  href="/logout">log out</a>
+                  </div>
+                  <div>
+                    <form action="/addFriend" method="post">
+                      <input class="inputForm" type="text" name="rechercher" placeholder="Search friend">
+                    </form>
+                    <div class="error">* Impossible de s'ajouter soi-même en ami</div>
+                  </div>
+                  <div class="ul-container">
+                    <ul id="friend">
+                    </ul>
+                  </div>
+                </div>
+                <div class="chat">
+                  <div class="ul-container">
+                    <ul id="messages"></ul>
+                  </div>
+                  <div id="isWritting"></div>
+                  <form id="form" action="">
+                    <input class="toSend" id="msgInput" autocomplete="off" />
+                  </form> 
+                </div>
+              
+              </div>
+                <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+                <script src="../public/chat.js"></script>
+            </body>
+          </html>`
+            );
   } else {
     Friend.find({ $or: [{ pseudo1: pseudo, pseudo2: friend }, { pseudo1: friend, pseudo2: pseudo }] })
       .then((existingFriends) => {
@@ -90,15 +134,97 @@ app.post('/addFriend', verifyToken, async (req, res) => {
                     res.status(500).send("Erreur lors de l'ajout de l'ami : " + error);
                   });
               } else {
-                res.send('Utilisateur non trouvé');
+                res.send(`<!DOCTYPE html>
+                <html>
+                  <head>
+                    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+                    <title>Chat</title>
+                    <link rel="stylesheet" href="../public/styles.css">
+                    <link rel="stylesheet" href="../public/reset.css">
+                    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+                  </head>
+                  <body>
+                    <div class="flexbox">
+                      <div class="left">
+                        <div class="logout">
+                          <a  href="/logout">log out</a>
+                        </div>
+                        <div>
+                          <form action="/addFriend" method="post">
+                            <input class="inputForm" type="text" name="rechercher" placeholder="Search friend">
+                          </form>
+                          <div class="error">* Utilisateur non trouvé</div>
+                        </div>
+                        <div class="ul-container">
+                          <ul id="friend">
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="chat">
+                        <div class="ul-container">
+                          <ul id="messages"></ul>
+                        </div>
+                        <div id="isWritting"></div>
+                        <form id="form" action="">
+                          <input class="toSend" id="msgInput" autocomplete="off" />
+                        </form> 
+                      </div>
+                    
+                    </div>
+                      <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+                      <script src="../public/chat.js"></script>
+                  </body>
+                </html>`
+                  );
               }
             })
             .catch((error) => {
               res.status(500).send("Erreur lors de la recherche de l'utilisateur : " + error);
             });
         } else {
-  
-          res.send("L'amitié existe déjà.");
+          res.send(`<!DOCTYPE html>
+          <html>
+            <head>
+              <meta name="viewport" content="width=device-width,initial-scale=1.0">
+              <title>Chat</title>
+              <link rel="stylesheet" href="../public/styles.css">
+              <link rel="stylesheet" href="../public/reset.css">
+              <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+            </head>
+            <body>
+              <div class="flexbox">
+                <div class="left">
+                  <div class="logout">
+                    <a  href="/logout">log out</a>
+                  </div>
+                  <div>
+                    <form action="/addFriend" method="post">
+                      <input class="inputForm" type="text" name="rechercher" placeholder="Search friend">
+                    </form>
+                    <div class="error">* L'amitié existe déjà</div>
+                  </div>
+                  <div class="ul-container">
+                    <ul id="friend">
+                    </ul>
+                  </div>
+                </div>
+                <div class="chat">
+                  <div class="ul-container">
+                    <ul id="messages"></ul>
+                  </div>
+                  <div id="isWritting"></div>
+                  <form id="form" action="">
+                    <input class="toSend" id="msgInput" autocomplete="off" />
+                  </form> 
+                </div>
+              
+              </div>
+                <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+                <script src="../public/chat.js"></script>
+            </body>
+          </html>`
+            );
+          
         }
       })
       .catch((error) => {

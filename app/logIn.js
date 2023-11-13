@@ -23,7 +23,35 @@ router.post('/', async (req, res) => {
       if (users.length > 0) {
         let verif = await bcrypt.compare(req.body.password, users[0].password);
         if (!verif) {
-          res.status(400).send('Password ou Email incorrect');
+          res.send(`<!DOCTYPE html>
+        <html>
+          <head>
+            <meta name="viewport" content="width=device-width,initial-scale=1.0">
+            <link rel="stylesheet" href="../public/styles.css">
+            <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+            <title>logIn</title>
+          </head>
+          <body>
+              <form class="connect" action="" method="post">
+                <h1>Login</h1>
+                <div class="svg"></div>
+                <div class="flexbox">
+                  <div class="flexbox">
+                    <label class="label" for="email">Email</label>
+                    <input class="inputForm" type="email" name="email" placeholder="Enter email">
+                    <div class="error">* Password or Email incorrect</div>
+                  </div>
+                  <div class="flexbox">
+                    <label class="label" for="password">Password</label>
+                    <input class="inputForm" type="password" name="password"  placeholder="Enter password" autocomplete="current-password">
+                  </div>
+                  <button class="boutton" type="submit">Log in</button>
+                  <p>Don't have account ? <a href="/signup">Create account</a></p>
+                  
+                </div>
+              </form>
+          </body>
+        </html>`)
           return;
         }
   
@@ -40,7 +68,35 @@ router.post('/', async (req, res) => {
           res.redirect('/');
         });
       }else{
-        res.send('Password ou Email incorrect')
+        res.send(`<!DOCTYPE html>
+        <html>
+          <head>
+            <meta name="viewport" content="width=device-width,initial-scale=1.0">
+            <link rel="stylesheet" href="../public/styles.css">
+            <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+            <title>logIn</title>
+          </head>
+          <body>
+              <form class="connect" action="" method="post">
+                <h1>Login</h1>
+                <div class="svg"></div>
+                <div class="flexbox">
+                  <div class="flexbox">
+                  <div>* Password or Email incorrect</div>
+                    <label class="label" for="email">Email</label>
+                    <input class="inputForm" type="email" name="email" placeholder="Enter email">
+                  </div>
+                  <div class="flexbox">
+                    <label class="label" for="password">Password</label>
+                    <input class="inputForm" type="password" name="password"  placeholder="Enter password" autocomplete="current-password">
+                  </div>
+                  <button class="boutton" type="submit">Log in</button>
+                  <p>Don't have account ? <a href="/signup">Create account</a></p>
+                  
+                </div>
+              </form>
+          </body>
+        </html>`)
       }
     } catch (error) {
       console.error(error);

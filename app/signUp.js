@@ -47,16 +47,171 @@ router.post('/',async(req,res)=>{
         
       })}
       else{
-        res.send('Un utilisateur possede deja ce nom et/ou email')
+        const val=await User.find({ email: req.body.email })
+        if(val.length!==0){
+          res.send(`
+        
+          <!DOCTYPE html>
+  <html>
+    <head>
+      <meta name="viewport" content="width=device-width,initial-scale=1.0">
+      <title>signUp</title>
+      <link rel="stylesheet" href="../public/styles.css">
+      <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    </head>
+    <body>
+        <form class="connect" action="" method="post">
+          <h1>Signup</h1>
+          <div class="svg"></div>
+          <div class="flexbox">
+            <div class="flexbox">
+              <label class="label" for="pseudo">Pseudo</label>
+              <input class="inputForm" type="text" name="pseudo" placeholder="Enter pseudo">
+            </div>
+            <div class="flexbox">
+              <label class="label" for="email">Email</label>
+              <input class="inputForm" type="email" name="email" placeholder="Enter email">
+              <div class="error">* Un utilisateur possede deja cette email</div>
+            </div>
+            <div class="flexbox">
+              <label class="label" for="confirm_email">Confirm email</label>
+              <input class="inputForm" type="email" name="confirm_email" placeholder="Confirm email">
+            </div>
+            <div class="flexbox">
+              <label class="label" for="password">Password</label>
+              <input class="inputForm" type="password" name="password" placeholder="Enter password" autocomplete="current-password">
+            </div>
+            <button class="boutton" type="submit" id="submit">Sign up</button>
+          </div>
+        </form>
+    </body>
+  </html>
+          `)
+        }
+        else{
+          res.send(`
+        
+          <!DOCTYPE html>
+  <html>
+    <head>
+      <meta name="viewport" content="width=device-width,initial-scale=1.0">
+      <title>signUp</title>
+      <link rel="stylesheet" href="../public/styles.css">
+      <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    </head>
+    <body>
+        <form class="connect" action="" method="post">
+          <h1>Signup</h1>
+          <div class="svg"></div>
+          <div class="flexbox">
+            <div class="flexbox">
+              <label class="label" for="pseudo">Pseudo</label>
+              <input class="inputForm" type="text" name="pseudo" placeholder="Enter pseudo">
+              <div class="error">* Un utilisateur possede deja ce pseudo</div>
+            </div>
+            <div class="flexbox">
+              <label class="label" for="email">Email</label>
+              <input class="inputForm" type="email" name="email" placeholder="Enter email">
+            </div>
+            <div class="flexbox">
+              <label class="label" for="confirm_email">Confirm email</label>
+              <input class="inputForm" type="email" name="confirm_email" placeholder="Confirm email">
+            </div>
+            <div class="flexbox">
+              <label class="label" for="password">Password</label>
+              <input class="inputForm" type="password" name="password" placeholder="Enter password" autocomplete="current-password">
+            </div>
+            <button class="boutton" type="submit" id="submit">Sign up</button>
+          </div>
+        </form>
+    </body>
+  </html>
+          `)
+        }
+        
       }
         
       }
         catch(err){
-          res.send('champ non respecte')
+          res.send(`
+        
+        <!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>signUp</title>
+    <link rel="stylesheet" href="../public/styles.css">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+  </head>
+  <body>
+      <form class="connect" action="" method="post">
+        <h1>Signup</h1>
+        <div class="svg"></div>
+        <div class="flexbox">
+          <div class="flexbox">
+          <div class="error">* Champs non respecte</div>
+            <label class="label" for="pseudo">Pseudo</label>
+            <input class="inputForm" type="text" name="pseudo" placeholder="Enter pseudo">
+          </div>
+          <div class="flexbox">
+            <label class="label" for="email">Email</label>
+            <input class="inputForm" type="email" name="email" placeholder="Enter email">
+          </div>
+          <div class="flexbox">
+            <label class="label" for="confirm_email">Confirm email</label>
+            <input class="inputForm" type="email" name="confirm_email" placeholder="Confirm email">
+          </div>
+          <div class="flexbox">
+            <label class="label" for="password">Password</label>
+            <input class="inputForm" type="password" name="password" placeholder="Enter password" autocomplete="current-password">
+          </div>
+          <button class="boutton" type="submit" id="submit">Sign up</button>
+        </div>
+      </form>
+  </body>
+</html>
+        `)
         }
       }
       else{
-        res.send('Email different')
+        res.send(`
+        
+        <!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>signUp</title>
+    <link rel="stylesheet" href="../public/styles.css">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+  </head>
+  <body>
+      <form class="connect" action="" method="post">
+        <h1>Signup</h1>
+        <div class="svg"></div>
+        <div class="flexbox">
+          <div class="flexbox">
+            <label class="label" for="pseudo">Pseudo</label>
+            <input class="inputForm" type="text" name="pseudo" placeholder="Enter pseudo">
+          </div>
+          <div class="flexbox">
+            <label class="label" for="email">Email</label>
+            <input class="inputForm" type="email" name="email" placeholder="Enter email">
+          </div>
+          <div class="flexbox">
+            <label class="label" for="confirm_email">Confirm email</label>
+            <input class="inputForm" type="email" name="confirm_email" placeholder="Confirm email">
+            <div class="error">* Email different</div>
+          </div>
+          <div class="flexbox">
+            <label class="label" for="password">Password</label>
+            <input class="inputForm" type="password" name="password" placeholder="Enter password" autocomplete="current-password">
+          </div>
+          <button class="boutton" type="submit" id="submit">Sign up</button>
+        </div>
+      </form>
+  </body>
+</html>
+        `)
       }
   
   })

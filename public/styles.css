@@ -1,5 +1,6 @@
 body{
     background-color: rgba(200, 200, 200, 0.99);
+    overflow: hidden;
 }
 
 
@@ -76,9 +77,13 @@ h1{
     padding-bottom: 13px;
     font-family: 'Poppins';
     font-size: 17px;
-    color: rgba(0, 0, 0, 0.99);
+    color: #fff;
     border: none;
+    cursor: pointer;
     background:linear-gradient(#DD7A05, #EC19A4);;
+}
+.boutton:hover {
+    transform: scale(1.1);
 }
 p{
     color: rgba(0, 0, 0, 0.99);
@@ -174,7 +179,8 @@ p{
 
    .ul-container {
     width: 270px;
-    height: 90vh;
+    margin-top: 10px;
+    height: 75vh;
     overflow: auto;
 }
 
@@ -266,4 +272,13 @@ p{
     text-decoration: underline;
  }
   
-  
+  .error{
+    font-family: 'Poppins';
+    color : red;
+    font-size: 11px;
+  }
+  .left .error{
+    margin-left: 5px;
+    position: relative;
+
+  }
